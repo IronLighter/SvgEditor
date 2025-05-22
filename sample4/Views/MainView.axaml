@@ -7,11 +7,14 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="sample4.Views.MainView"
              x:DataType="vm:MainViewModel">
-  <Design.DataContext>
-    <vm:MainViewModel />
-  </Design.DataContext>
-
-	<Grid>
-		<c:MyCanvas DataContext="{Binding Vm}"/>
+	<Design.DataContext>
+		<vm:MainViewModel />
+	</Design.DataContext>
+	<Grid ShowGridLines="true" ColumnDefinitions="0.2*, *, 0.2*" RowDefinitions="0.05*, *, 0.15*">
+		<TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="верхняя менюшка" TextAlignment="Center" VerticalAlignment="Center"/>
+		<TextBlock Grid.Row="1" Grid.Column="0" Text="окно атрибутов" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
+		<c:MyCanvas Grid.Row="1" Grid.Column="1"/>
+		<TextBlock Grid.Row="1" Grid.Column="2" Text="панель инструментов" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
+		<TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Text="окно с кодом" TextAlignment="Center" VerticalAlignment="Center"/>
 	</Grid>
 </UserControl>

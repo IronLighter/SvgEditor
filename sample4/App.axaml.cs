@@ -3,8 +3,8 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 
-using sample4.ViewModels;
 using sample4.Views;
+using sample4.ViewModels;
 
 namespace sample4;
 
