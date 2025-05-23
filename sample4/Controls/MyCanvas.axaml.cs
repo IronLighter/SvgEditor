@@ -15,9 +15,9 @@ public partial class MyCanvas : UserControl
     private Point _currentPos; //текущая позиция мыши
     private Rectangle _selection = new();
 
-    private readonly SolidColorBrush _mainColor = new(Colors.LightBlue);
-    private readonly SolidColorBrush _borderColor = new(Colors.Black);
-    private readonly double _thickness = 1.5;
+    private readonly SolidColorBrush _mainColor = InstrumentPanel.SelectedMainColor;
+    private readonly SolidColorBrush _borderColor = InstrumentPanel.SelectedBorderColor;
+    private readonly double _thickness = InstrumentPanel.SelectedBorderThickness;
 
     public MyCanvas()
     {
@@ -31,7 +31,7 @@ public partial class MyCanvas : UserControl
     {
         _selection = new()
         {
-            Fill = new SolidColorBrush(_mainColor.Color, 0.5),
+            Fill = _mainColor,
             Stroke = _borderColor,
             StrokeThickness = _thickness,
             StrokeDashArray = [5, 3],
@@ -53,8 +53,16 @@ public partial class MyCanvas : UserControl
     }
     public void AddElement()
     {
-        MyRect rect = new MyRect(_startPos, _currentPos);
-        rect.DrawRect(DrawingCanvas);
+        if(InstrumentPanel.SelectedShapeType == InstrumentPanel.ShapeType.Rectangle)
+        {
+            MyRect rect = new MyRect(_startPos, _currentPos);
+            rect.DrawRect(DrawingCanvas);
+        }
+        if (InstrumentPanel.SelectedShapeType == InstrumentPanel.ShapeType.Line)
+        {
+            MyLine line = new MyLine(_startPos, _currentPos);
+            line.DrawLine(DrawingCanvas);
+        }
     }
 
     private void SetupEvents()

@@ -2,21 +2,20 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace sample4.Controls.Shapes
 {
     public class MyRect
     {
-        private readonly int _cornerCount = 4;
+        private readonly int _pointsCount = 4;
         private readonly List<MyPoint> _points = [];
         private readonly List<Line> _lines = [];
         private Path _filling = new();
 
-        private readonly SolidColorBrush _mainColor = new(Colors.LightBlue);
-        private readonly SolidColorBrush _borderColor = new(Colors.Black);
-        private readonly double _thickness = 1.5;
+        private readonly SolidColorBrush _mainColor = InstrumentPanel.SelectedMainColor;
+        private readonly SolidColorBrush _borderColor = InstrumentPanel.SelectedBorderColor;
+        private readonly double _thickness = InstrumentPanel.SelectedBorderThickness;
 
         public MyRect(Point start, Point end)
         {
@@ -35,7 +34,7 @@ namespace sample4.Controls.Shapes
                 new Point(start.X, end.Y) //bottom left
             };
 
-            for (int i = 0; i < _cornerCount; i++)
+            for (int i = 0; i < _pointsCount; i++)
             {
                 var point = new MyPoint();
                 point.Position = new(cords[i].X - point.Radius, cords[i].Y - point.Radius);
@@ -46,7 +45,7 @@ namespace sample4.Controls.Shapes
 
         private void CreateLines()
         {
-            for (int i = 0; i < _cornerCount; i++)
+            for (int i = 0; i < _pointsCount; i++)
             {
                 Line line = new()
                 {
@@ -59,9 +58,9 @@ namespace sample4.Controls.Shapes
         }
         private void UpdateLines()
         {
-            for (int i = 0; i < _cornerCount; i++)
+            for (int i = 0; i < _pointsCount; i++)
             {
-                var nextIndex = (i + 1) % _cornerCount;
+                var nextIndex = (i + 1) % _pointsCount;
                 _lines[i].StartPoint = new(_points[i].Position.X + _points[i].Radius, _points[i].Position.Y + _points[i].Radius);
                 _lines[i].EndPoint = new(_points[nextIndex].Position.X + _points[nextIndex].Radius, _points[nextIndex].Position.Y + _points[nextIndex].Radius);
             }
