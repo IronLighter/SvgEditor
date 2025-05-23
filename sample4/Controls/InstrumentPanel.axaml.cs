@@ -15,7 +15,6 @@ public partial class InstrumentPanel : UserControl
     public static double SelectedBorderThickness { get; private set; } = 1.5;
     public static ShapeType SelectedShapeType { get; private set; } = ShapeType.Rectangle;
 
-
     private byte _red = 255;
     private byte _green = 255;
     private byte _blue = 255;
