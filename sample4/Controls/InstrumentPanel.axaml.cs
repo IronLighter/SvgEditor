@@ -82,6 +82,10 @@ public partial class InstrumentPanel : UserControl
     {
         SelectedShapeType = ShapeType.Ellipse;
     }
+    public void CircleButton_Click(object sender, RoutedEventArgs e)
+    {
+        SelectedShapeType = ShapeType.Circle;
+    }
     public void LineButton_Click(object sender, RoutedEventArgs e)
     {
         SelectedShapeType = ShapeType.Line;

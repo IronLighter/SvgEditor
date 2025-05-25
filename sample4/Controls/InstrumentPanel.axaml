@@ -10,7 +10,8 @@
 			<Button Click="RectButton_Click"> Rect </Button>
 			<Button Click="SquareButton_Click"> Square </Button>
 			<Button Click="EllipseButton_Click"> Ellipse </Button>
-			<Button Click="LineButton_Click"> Line</Button>
+			<Button Click="CircleButton_Click"> Circle </Button>
+			<Button Click="LineButton_Click"> Line </Button>
 		</WrapPanel>
 
 		<Separator/>
