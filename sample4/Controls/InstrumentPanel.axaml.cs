@@ -10,226 +10,80 @@ namespace sample4.Controls;
 
 public partial class InstrumentPanel : UserControl
 {
-    public static SolidColorBrush SelectedMainColor { get; private set; } = new(Colors.White);
-    public static SolidColorBrush SelectedBorderColor { get; private set; } = new(Colors.Black);
-    public static double SelectedBorderThickness { get; private set; } = 1.5;
+    public static SolidColorBrush? SelectedMainColor { get; private set; }
+    public static SolidColorBrush? SelectedBorderColor { get; private set; }
+    public static double SelectedBorderThickness { get; private set; }
     public static ShapeType SelectedShapeType { get; private set; } = ShapeType.Rectangle;
-
-    private byte _red = 255;
-    private byte _green = 255;
-    private byte _blue = 255;
-    private byte _borderRed = 0;
-    private byte _borderGreen = 0;
-    private byte _borderBlue = 0;
-
     public enum ShapeType
     {
         Rectangle,
+        Square,
+        Ellipse,
+        Circle,
         Line,
     }
+
     public InstrumentPanel()
     {
         InitializeComponent();
+
+        MainColorPickerSetup();
+        SelectedMainColor = new(MainColorPicker.Color);
+
+        BorderColorPickerSetup();
+        SelectedBorderColor = new(BorderColorPicker.Color);
+
+        BorderThicknessSliderSetup();
+        SelectedBorderThickness = BorderThicknessSlider.Value;
     }
-    private void InitializeComponent()
+    private void MainColorPickerSetup()
     {
-        var stackPanel = new StackPanel
+        MainColorPicker.Color = Colors.White;
+        MainColorPicker.PropertyChanged += (s, e) =>
         {
-            Spacing = 5,
-            Margin = new Thickness(5),
-            Width = 200
-        };
-
-        stackPanel.Children.Add(new TextBlock
-        {
-            Text = "Instruments",
-            FontSize = 16,
-            HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center
-        });
-
-        stackPanel.Children.Add(CreateShapeButtonsPanel());
-
-        stackPanel.Children.Add(CreateColorPalette("Main color", color =>
-        {
-            SelectedMainColor = new SolidColorBrush(color);
-        }, _red, _green, _blue, SelectedMainColor));
-
-        stackPanel.Children.Add(CreateColorPalette("Border color", color =>
-        {
-            SelectedBorderColor = new SolidColorBrush(color);
-        }, _borderRed, _borderGreen, _borderBlue, SelectedBorderColor));
-
-        stackPanel.Children.Add(CreateBorderThicknessControl());
-
-        Content = stackPanel;
-        
-    }
-
-    private WrapPanel CreateShapeButtonsPanel()
-    {
-        var panel = new WrapPanel
-        {
-            Orientation = Avalonia.Layout.Orientation.Horizontal,
-            HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center,
-        };
-
-        var shapes = new Dictionary<string, ShapeType>
+            if (e.Property == ColorPicker.ColorProperty)
             {
-                { "Rect", ShapeType.Rectangle },
-                { "Line", ShapeType.Line }
-            };
-
-        foreach (var shape in shapes)
-        {
-            var button = new Button
-            {
-                Content = shape.Key,
-                Tag = shape.Value,
-            };
-
-            button.Click += (s, e) =>
-            {
-                SelectedShapeType = (ShapeType)button.Tag;
-                UpdateButtonsVisual(panel, button);
-            };
-
-            panel.Children.Add(button);
-        }
-
-        return panel;
+                SelectedMainColor = new SolidColorBrush(MainColorPicker.Color);
+            }
+        };
     }
-
-    private StackPanel CreateColorPalette(string title,Action<Color> updateAction,byte r, byte g, byte b,IBrush currentColor)
+    private void BorderColorPickerSetup()
     {
-        var panel = new StackPanel { Spacing = 8, HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center };
-
-        panel.Children.Add(new TextBlock
+        BorderColorPicker.Color = Colors.Black;
+        BorderColorPicker.PropertyChanged += (s, e) =>
         {
-            Text = title,
-            FontWeight = FontWeight.SemiBold
-        });
-
-        var colorPreview = new Border
-        {
-            Height = 30,
-            Background = currentColor,
-            BorderBrush = Brushes.Gray,
-            BorderThickness = new Thickness(1)
+            if (e.Property == ColorPicker.ColorProperty)
+            {
+                SelectedBorderColor = new SolidColorBrush(BorderColorPicker.Color);
+            }
         };
-        panel.Children.Add(colorPreview);
-
-        panel.Children.Add(CreateColorSlider("R", r, val =>
-        {
-            r = (byte)val;
-            updateAction(Color.FromRgb(r, g, b));
-            colorPreview.Background = new SolidColorBrush(Color.FromRgb(r, g, b));
-        }));
-
-        panel.Children.Add(CreateColorSlider("G", g, val =>
-        {
-            g = (byte)val;
-            updateAction(Color.FromRgb(r, g, b));
-            colorPreview.Background = new SolidColorBrush(Color.FromRgb(r, g, b));
-        }));
-
-        panel.Children.Add(CreateColorSlider("B", b, val =>
-        {
-            b = (byte)val;
-            updateAction(Color.FromRgb(r, g, b));
-            colorPreview.Background = new SolidColorBrush(Color.FromRgb(r, g, b));
-        }));
-
-        return panel;
     }
-
-
-    private StackPanel CreateColorSlider(string label, byte initialValue, Action<int> onValueChanged)
+    private void BorderThicknessSliderSetup()
     {
-        var panel = new StackPanel
-        {
-            Orientation = Avalonia.Layout.Orientation.Horizontal,
-            Spacing = 5
-        };
-
-        panel.Children.Add(new TextBlock
-        {
-            Text = label,
-            Width = 20
-        });
-
-        var slider = new Slider
-        {
-            Minimum = 0,
-            Maximum = 255,
-            Value = initialValue,
-            Width = 120
-        };
-
-        var valueBox = new TextBlock
-        {
-            Text = initialValue.ToString(),
-            Width = 30
-        };
-
-        slider.PropertyChanged += (s, e) =>
+        BorderThicknessSlider.Value = 1.5;
+        BorderThicknessSlider.PropertyChanged += (s, e) =>
         {
             if (e.Property == RangeBase.ValueProperty)
             {
-                var value = (int)slider.Value;
-                valueBox.Text = value.ToString();
-                onValueChanged(value);
+                SelectedBorderThickness = BorderThicknessSlider.Value;
             }
         };
-
-        panel.Children.Add(slider);
-        panel.Children.Add(valueBox);
-
-        return panel;
     }
 
-
-    private StackPanel CreateBorderThicknessControl()
+    public void RectButton_Click(object sender, RoutedEventArgs e)
     {
-        var panel = new StackPanel { Spacing = 5, HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center };
-
-        panel.Children.Add(new TextBlock
-        {
-            Text = "Thickness",
-        });
-
-        var slider = new Slider
-        {
-            Minimum = 0.5,
-            Maximum = 5,
-            Value = SelectedBorderThickness,
-            Width = 120
-        };
-
-        slider.PropertyChanged += (s, e) =>
-        {
-            if (e.Property == Slider.ValueProperty)
-            {
-                SelectedBorderThickness = slider.Value;
-            }
-        };
-
-        panel.Children.Add(slider);
-        return panel;
+        SelectedShapeType = ShapeType.Rectangle;
     }
-
-    private void UpdateButtonsVisual(Panel container, Button selectedButton)
+    public void SquareButton_Click(object sender, RoutedEventArgs e)
     {
-        foreach (var child in container.Children)
-        {
-            if (child is Button button)
-            {
-                button.BorderBrush = button == selectedButton
-                    ? Brushes.Blue
-                    : Brushes.Gray;
-                button.BorderThickness = button == selectedButton
-                    ? new Thickness(2)
-                    : new Thickness(1);
-            }
-        }
+        SelectedShapeType = ShapeType.Square;
+    }
+    public void EllipseButton_Click(object sender, RoutedEventArgs e)
+    {
+        SelectedShapeType = ShapeType.Ellipse;
+    }
+    public void LineButton_Click(object sender, RoutedEventArgs e)
+    {
+        SelectedShapeType = ShapeType.Line;
     }
 }

@@ -2,6 +2,36 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="450"
              x:Class="sample4.Controls.InstrumentPanel">
+	<StackPanel MinWidth="200" Spacing="10" Margin="10">
+		<TextBlock Text="Инструменты" FontSize="16" HorizontalAlignment="Center"/>
+		<WrapPanel HorizontalAlignment="Center" >
+			<Button Click="RectButton_Click"> Rect </Button>
+			<Button Click="SquareButton_Click"> Square </Button>
+			<Button Click="EllipseButton_Click"> Ellipse </Button>
+			<Button Click="LineButton_Click"> Line</Button>
+		</WrapPanel>
+
+		<Separator/>
+
+
+		<TextBlock Text="Заливка" FontSize="16" HorizontalAlignment="Center"/>
+		<StackPanel Spacing="10" Orientation="Horizontal" HorizontalAlignment="Center">
+			<TextBlock Text="Цвет" FontSize="16" VerticalAlignment="Center"/>
+			<ColorPicker x:Name="MainColorPicker" Width="120" IsColorPaletteVisible="False"/>
+		</StackPanel>
+
+		<Separator/>
+
+		<TextBlock Text="Граница" FontSize="16" HorizontalAlignment="Center"/>
+		<StackPanel Spacing="10" Orientation="Horizontal" HorizontalAlignment="Center">
+			<TextBlock Text="Цвет" FontSize="16" VerticalAlignment="Center"/>
+			<ColorPicker x:Name="BorderColorPicker" Width="120" IsColorPaletteVisible="False" />
+		</StackPanel>
+		<StackPanel Spacing="10" Orientation="Horizontal" HorizontalAlignment="Center">
+			<TextBlock Text="Толщина" FontSize="16" VerticalAlignment="Center"/>
+			<Slider x:Name="BorderThicknessSlider" Width="90" Minimum = "0.5" Maximum = "10"/>
+		</StackPanel>
+	</StackPanel>
 </UserControl>

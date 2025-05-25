@@ -13,7 +13,7 @@ namespace sample4.Controls.Shapes
         private readonly List<MyPoint> _points = [];
         private  Line _line = new();
 
-        private readonly SolidColorBrush _borderColor = InstrumentPanel.SelectedBorderColor;
+        private readonly SolidColorBrush? _borderColor = InstrumentPanel.SelectedBorderColor;
         private readonly double _thickness = InstrumentPanel.SelectedBorderThickness;
 
         public MyLine(Point start, Point end)

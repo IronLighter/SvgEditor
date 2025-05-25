@@ -5,6 +5,7 @@ using Avalonia.Input;
 using Avalonia.Media;
 using sample4.Controls.Shapes;
 using System;
+using System.Diagnostics;
 
 namespace sample4.Controls;
 
@@ -15,8 +16,8 @@ public partial class MyCanvas : UserControl
     private Point _currentPos; //текущая позиция мыши
     private Rectangle _selection = new();
 
-    private readonly SolidColorBrush _mainColor = InstrumentPanel.SelectedMainColor;
-    private readonly SolidColorBrush _borderColor = InstrumentPanel.SelectedBorderColor;
+    private readonly SolidColorBrush? _mainColor = InstrumentPanel.SelectedMainColor;
+    private readonly SolidColorBrush? _borderColor = InstrumentPanel.SelectedBorderColor;
     private readonly double _thickness = InstrumentPanel.SelectedBorderThickness;
 
     public MyCanvas()
@@ -31,8 +32,6 @@ public partial class MyCanvas : UserControl
     {
         _selection = new()
         {
-            Fill = _mainColor,
-            Stroke = _borderColor,
             StrokeThickness = _thickness,
             StrokeDashArray = [5, 3],
             IsVisible = false
@@ -48,20 +47,35 @@ public partial class MyCanvas : UserControl
 
         _selection.Width = Width;
         _selection.Height = Height;
+        _selection.Fill = _mainColor;
+        _selection.Stroke = _borderColor;
         Canvas.SetLeft(_selection, Left);
         Canvas.SetTop(_selection, Top);
     }
     public void AddElement()
     {
-        if(InstrumentPanel.SelectedShapeType == InstrumentPanel.ShapeType.Rectangle)
+        switch (InstrumentPanel.SelectedShapeType)
         {
-            MyRect rect = new MyRect(_startPos, _currentPos);
-            rect.DrawRect(DrawingCanvas);
-        }
-        if (InstrumentPanel.SelectedShapeType == InstrumentPanel.ShapeType.Line)
-        {
-            MyLine line = new MyLine(_startPos, _currentPos);
-            line.DrawLine(DrawingCanvas);
+            case InstrumentPanel.ShapeType.Rectangle:
+                MyRect rect = new MyRect(_startPos, _currentPos, false);
+                rect.DrawRect(DrawingCanvas);
+                break;
+            case InstrumentPanel.ShapeType.Square:
+                MyRect square = new MyRect(_startPos, _currentPos, true);
+                square.DrawRect(DrawingCanvas);
+                break;
+            case InstrumentPanel.ShapeType.Ellipse:
+                MyEllipse ellipse = new MyEllipse(_startPos, _currentPos, false);
+                ellipse.DrawEllipse(DrawingCanvas);
+                break;
+            case InstrumentPanel.ShapeType.Circle:
+                MyEllipse circle = new MyEllipse(_startPos, _currentPos, true);
+                circle.DrawEllipse(DrawingCanvas);
+                break;
+            case InstrumentPanel.ShapeType.Line:
+                MyLine line = new MyLine(_startPos, _currentPos);
+                line.DrawLine(DrawingCanvas);
+                break;
         }
     }
 

@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
+using System;
 using System.Collections.Generic;
 
 namespace sample4.Controls.Shapes
@@ -13,19 +14,27 @@ namespace sample4.Controls.Shapes
         private readonly List<Line> _lines = [];
         private Path _filling = new();
 
-        private readonly SolidColorBrush _mainColor = InstrumentPanel.SelectedMainColor;
-        private readonly SolidColorBrush _borderColor = InstrumentPanel.SelectedBorderColor;
+        private readonly SolidColorBrush? _mainColor = InstrumentPanel.SelectedMainColor;
+        private readonly SolidColorBrush? _borderColor = InstrumentPanel.SelectedBorderColor;
         private readonly double _thickness = InstrumentPanel.SelectedBorderThickness;
 
-        public MyRect(Point start, Point end)
+        public MyRect(Point start, Point end, bool isSquare)
         {
-            CreatePoints(start, end);
+            CreatePoints(start, end, isSquare);
             CreateLines();
             CreateFilling();
         }
 
-        private void CreatePoints(Point start, Point end)
+        private void CreatePoints(Point start, Point end, bool isSquare)
         {
+            if (isSquare)
+            {
+                double side = Math.Min(Math.Abs(end.X - start.X), Math.Abs(end.Y - start.Y));
+                end = new Point(start.X + (end.X > start.X ? side : -side),
+                               start.Y + (end.Y > start.Y ? side : -side));
+            }
+
+
             var cords = new[]
             {
                 start,                      //top left
