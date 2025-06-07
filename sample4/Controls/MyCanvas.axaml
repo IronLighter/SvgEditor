@@ -5,7 +5,7 @@
 			 xmlns:shape="clr-namespace:sample4.Controls.Shapes"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="sample4.Controls.MyCanvas">
-	<Canvas x:Name="DrawingCanvas" Background="Transparent">
-		
-	</Canvas>
+	<!--<StackPanel x:Name="CanvasContainer" Background="Gray">-->
+		<Canvas x:Name="DrawingCanvas" Background="White"/>
+	<!--</StackPanel>-->
 </UserControl>

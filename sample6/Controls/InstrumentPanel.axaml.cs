@@ -3,7 +3,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 
-namespace sample4.Controls;
+namespace sample6.Controls;
 
 public partial class InstrumentPanel : UserControl
 {
@@ -57,7 +57,7 @@ public partial class InstrumentPanel : UserControl
     }
     private void BorderThicknessSliderSetup()
     {
-        BorderThicknessSlider.Value = 1;
+        BorderThicknessSlider.Value = 1.5;
         BorderThicknessSlider.PropertyChanged += (s, e) =>
         {
             if (e.Property == RangeBase.ValueProperty)

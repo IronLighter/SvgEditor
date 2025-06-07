@@ -1,0 +1,24 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:sample6.ViewModels"
+			 xmlns:c="clr-namespace:sample6.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="sample6.Views.MainView"
+             x:DataType="vm:MainViewModel">
+  <Design.DataContext>
+    <vm:MainViewModel />
+  </Design.DataContext>
+	<Grid RowDefinitions="0.05*, *" ShowGridLines="true">
+		<TextBlock Grid.Row="0" Text="верхняя менюшка" TextAlignment="Center" VerticalAlignment="Center"/>
+		<Grid ColumnDefinitions="0.2*, *, 0.2*" Grid.Row="1" ShowGridLines="true">
+			<TextBlock Grid.Column="0" Text="окно атрибутов" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
+			<Grid RowDefinitions="*, 0.15*" ShowGridLines="true" Grid.Column="1">
+				<c:MyCanvas Grid.Row="0"/>
+				<c:CodePanel Grid.Row="1"/>
+			</Grid>
+			<c:InstrumentPanel Grid.Column="2"/>
+		</Grid>
+	</Grid>
+</UserControl>

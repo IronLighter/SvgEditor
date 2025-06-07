@@ -1,16 +1,16 @@
-using Avalonia;
+п»їusing Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Media;
 using System;
 
-namespace sample4.Controls.Shapes;
+namespace sample4.Shapes;
 
 public partial class MyPoint : UserControl
 {
+    public double Radius = 10;
     private bool _dragging;
-    public double Radius = 10; //радиус публичный, чтобы линии могли его учитывать по координатам 
     public Point Position
     {
         get => new(Canvas.GetLeft(this), Canvas.GetTop(this));
@@ -21,11 +21,25 @@ public partial class MyPoint : UserControl
         }
     }
     public Action? UpdateElement;
-
     public MyPoint()
     {
-        InitializeComponent();
+        SetupVisual();
         SetupEvents();
+    }
+
+    private void SetupVisual()
+    {
+        var ellipse = new Ellipse
+        {
+            Width = Radius * 2,
+            Height = Radius * 2,
+            Fill = Brushes.White,
+            Stroke = Brushes.Black,
+            StrokeThickness = 1.5,
+            StrokeDashArray = [4, 4]
+        };
+
+        Content = ellipse;
     }
     private void SetupEvents()
     {
@@ -33,6 +47,7 @@ public partial class MyPoint : UserControl
         PointerMoved += MyPoint_PointerMoved;
         PointerReleased += MyPoint_PointerReleased;
     }
+
 
     private void MyPoint_PointerPressed(object? sender, PointerPressedEventArgs e)
     {

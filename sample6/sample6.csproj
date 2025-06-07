@@ -13,12 +13,17 @@
     <PackageReference Include="Avalonia" Version="11.3.0" />
     <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.3.0" />
     <PackageReference Include="Avalonia.Controls.ColorPicker" Version="11.3.0" />
+    <PackageReference Include="Avalonia.Svg" Version="11.3.0" />
+    <PackageReference Include="Avalonia.Svg.Skia" Version="11.3.0" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.0" />
     <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.0" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.3.0" />
+    <PackageReference Include="Skia.Controls.Avalonia" Version="11.3.0.1" />
+    <PackageReference Include="SkiaSharp" Version="3.119.0" />
+    <PackageReference Include="SkiaSharp.Views" Version="3.119.0" />
     <PackageReference Include="Svg.Controls.Skia.Avalonia" Version="11.3.0.1" />
   </ItemGroup>
 </Project>

@@ -1,56 +1,27 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Shapes;
 using Avalonia.Input;
-using Avalonia.Media;
-using sample4.Controls.Shapes;
+using sample4.Shapes;
 using System;
-using System.Diagnostics;
 
 namespace sample4.Controls;
 
 public partial class MyCanvas : UserControl
 {
     private bool _dragging;
-    private Point _startPos; //позиция мыши в начале выделения
-    private Point _currentPos; //текущая позиция мыши
-    private Rectangle _selection = new();
-
-    private readonly SolidColorBrush? _mainColor = InstrumentPanel.SelectedMainColor;
-    private readonly SolidColorBrush? _borderColor = InstrumentPanel.SelectedBorderColor;
-    private readonly double _thickness = InstrumentPanel.SelectedBorderThickness;
+    private Point _startPos;
+    private Point _currentPos;
+    private Selection? _selection;
 
     public MyCanvas()
     {
         InitializeComponent();
         SetupEvents();
-
-        CreateSelection();
+        SetCanvasSize(1000, 500);
     }
-
-    private void CreateSelection()
+    public void SetCanvasSize(double width, double height)
     {
-        _selection = new()
-        {
-            StrokeThickness = _thickness,
-            StrokeDashArray = [5, 3],
-            IsVisible = false
-        };
-        DrawingCanvas.Children.Add(_selection);
-    }
-    private void UpdateSelection()
-    {
-        var Width = Math.Abs(_startPos.X - _currentPos.X);
-        var Height = Math.Abs(_startPos.Y - _currentPos.Y);
-        var Left = Math.Min(_startPos.X, _currentPos.X);
-        var Top = Math.Min(_startPos.Y, _currentPos.Y);
-
-        _selection.Width = Width;
-        _selection.Height = Height;
-        _selection.Fill = _mainColor;
-        _selection.Stroke = _borderColor;
-        Canvas.SetLeft(_selection, Left);
-        Canvas.SetTop(_selection, Top);
+       
     }
     public void AddElement()
     {
@@ -58,23 +29,23 @@ public partial class MyCanvas : UserControl
         {
             case InstrumentPanel.ShapeType.Rectangle:
                 MyRect rect = new MyRect(_startPos, _currentPos, false);
-                rect.DrawRect(DrawingCanvas);
+                rect.Draw(DrawingCanvas);
                 break;
             case InstrumentPanel.ShapeType.Square:
                 MyRect square = new MyRect(_startPos, _currentPos, true);
-                square.DrawRect(DrawingCanvas);
+                square.Draw(DrawingCanvas);
                 break;
             case InstrumentPanel.ShapeType.Ellipse:
                 MyEllipse ellipse = new MyEllipse(_startPos, _currentPos, false);
-                ellipse.DrawEllipse(DrawingCanvas);
+                ellipse.Draw(DrawingCanvas);
                 break;
             case InstrumentPanel.ShapeType.Circle:
                 MyEllipse circle = new MyEllipse(_startPos, _currentPos, true);
-                circle.DrawEllipse(DrawingCanvas);
+                circle.Draw(DrawingCanvas);
                 break;
             case InstrumentPanel.ShapeType.Line:
                 MyLine line = new MyLine(_startPos, _currentPos);
-                line.DrawLine(DrawingCanvas);
+                line.Draw(DrawingCanvas);
                 break;
         }
     }
@@ -88,15 +59,17 @@ public partial class MyCanvas : UserControl
     private void MyCanvas_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         _dragging = true;
-        _selection.IsVisible = true;
+        _selection = new Selection(InstrumentPanel.SelectedShapeType);
+        _selection.Draw(DrawingCanvas);
+        _selection.Show();
         e.Handled = true;
     }
     private void MyCanvas_PointerMoved(object? sender, PointerEventArgs e)
     {
-        _currentPos = e.GetPosition(this);
-        if (_dragging)
+        _currentPos = new(Math.Round(e.GetPosition(this).X), Math.Round(e.GetPosition(this).Y));
+        if (_dragging && _selection != null)
         {
-            UpdateSelection();
+            _selection.Update(_startPos, _currentPos);
         }
         else
         {
@@ -106,14 +79,13 @@ public partial class MyCanvas : UserControl
     }
     private void MyCanvas_PointerReleased(object? sender, PointerReleasedEventArgs e)
     {
-        if (_dragging == true)
+        if (_dragging == true && _selection != null)
         {
             _dragging = false;
             _selection.ZIndex += 1; //выделение переходит на слой вверх каждый раз
-            _selection.IsVisible = false;
+            _selection.Hide();
             AddElement();
         }
         e.Handled = true;
     }
-
 }

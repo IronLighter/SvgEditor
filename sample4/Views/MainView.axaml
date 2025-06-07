@@ -4,18 +4,22 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:sample4.ViewModels"
 			 xmlns:c="clr-namespace:sample4.Controls"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="550"
              x:Class="sample4.Views.MainView"
              x:DataType="vm:MainViewModel">
 	<Design.DataContext>
 		<vm:MainViewModel />
 	</Design.DataContext>
 	
-	<Grid ShowGridLines="true" ColumnDefinitions="0.2*, *, 0.2*" RowDefinitions="0.05*, *, 0.15*">
-		<TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="верхняя менюшка" TextAlignment="Center" VerticalAlignment="Center"/>
-		<TextBlock Grid.Row="1" Grid.Column="0" Text="окно атрибутов" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
-		<c:MyCanvas Grid.Row="1" Grid.Column="1"/>
-		<c:InstrumentPanel Grid.Row="1" Grid.Column="3"/>
-		<TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Text="окно с кодом" TextAlignment="Center" VerticalAlignment="Center"/>
+	<Grid RowDefinitions="0.1*, *" ShowGridLines="true">
+		<c:TopMenu/>
+		<Grid ColumnDefinitions="0.2*, *, 0.2*" Grid.Row="1" ShowGridLines="true">
+			<c:AttributePanel/>
+			<Grid RowDefinitions="*, 0.3*" ShowGridLines="false" Grid.Column="1">
+				<c:MyCanvas Grid.Row="0"/>
+				<c:CodePanel Grid.Row="1"/>
+			</Grid>
+			<c:InstrumentPanel Grid.Column="2"/>
+		</Grid>
 	</Grid>
 </UserControl>
